@@ -1,11 +1,12 @@
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
+import pandas as pd
 
 class TradingEnv(gym.Env):
     def __init__(self, prices):
         super(TradingEnv, self).__init__()
-
+        self.df = df
         self.prices = prices
         self.max_steps = len(prices) - 1
         self.current_step = 0
@@ -19,6 +20,7 @@ class TradingEnv(gym.Env):
         # Portfolio state
         self.cash = 1000.0
         self.position = 0  # 0 = no stock, 1 = holding
+        self.prices = df["Close"].values
         self.stock_price = self.prices[0]
 
     def reset(self, *, seed=None, options=None):
@@ -27,6 +29,7 @@ class TradingEnv(gym.Env):
         self.current_step = 0
         self.cash = 1000.0
         self.position = 0
+        self.prices = df["Close"].values
         self.stock_price = self.prices[0]
         obs = self._get_obs()
         return obs, {}
